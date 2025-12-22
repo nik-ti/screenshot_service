@@ -1,0 +1,11 @@
+
+services:
+  screenshot-service:
+    build: .
+    ports:
+      - "3001:3001"
+    environment:
+      - MAX_CONCURRENT=5
+    volumes:
+      - ./cache:/app/cache
+    restart: unless-stopped
