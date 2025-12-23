@@ -19,7 +19,8 @@ async function test() {
         console.log(`Testing ${url}...`);
         try {
             const encoded = encodeURIComponent(url);
-            const res = await axios.get(`http://127.0.0.1:3001/screenshot?url=${encoded}&fullPage=true`, {
+            // Default is now viewport only
+            const res = await axios.get(`http://127.0.0.1:3001/screenshot?url=${encoded}`, {
                 responseType: 'arraybuffer',
                 timeout: 60000
             });
