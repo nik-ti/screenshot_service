@@ -41,11 +41,11 @@ const runWithConcurrencyLimit = <T>(fn: () => Promise<T>): Promise<T> => {
     });
 };
 
-fastify.get('/screenshot', async (request, reply) => {
-    const { url, fullPage } = request.query as { url: string, fullPage?: string };
+const handleScreenshot = async (request: any, reply: any) => {
+    const { url, fullPage } = (request.method === 'GET' ? request.query : request.body) as { url: string, fullPage?: string | boolean };
 
     if (!url) {
-        return reply.code(400).send({ error: 'Missing url query parameter' });
+        return reply.code(400).send({ error: 'Missing url parameter' });
     }
 
     // Check cache
@@ -61,7 +61,7 @@ fastify.get('/screenshot', async (request, reply) => {
         const buffer = await runWithConcurrencyLimit(() =>
             takeScreenshot({
                 url,
-                fullPage: fullPage === 'true'
+                fullPage: fullPage === 'true' || fullPage === true
             })
         );
 
@@ -74,7 +74,11 @@ fastify.get('/screenshot', async (request, reply) => {
         request.log.error(err);
         return reply.code(500).send({ error: 'Failed to take screenshot', details: err.message });
     }
-});
+};
+
+fastify.get('/screenshot', handleScreenshot);
+fastify.post('/screenshot', handleScreenshot);
+fastify.post('/', handleScreenshot); // Support direct POST to root for simpler URL if needed
 
 const start = async () => {
     try {
