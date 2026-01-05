@@ -16,10 +16,10 @@ A robust, production-ready web service for capturing high-quality screenshots of
 
 ## API Usage
 
-The service is available at `capture.simple-flow.co`.
+The service is available at `https://capture.simple-flow.co`.
 
-### POST /screenshot
-The recommended way to use the service.
+### POST /
+The recommended way to use the service. Simply POST to the root domain.
 
 **Request Body:**
 ```json
@@ -36,7 +36,7 @@ The recommended way to use the service.
 
 **cURL:**
 ```bash
-curl -X POST https://capture.simple-flow.co/screenshot \
+curl -X POST https://capture.simple-flow.co/ \
      -H "Content-Type: application/json" \
      -d '{"url": "https://surgeflow.ai"}' \
      --output screenshot.png
@@ -48,7 +48,7 @@ const axios = require('axios');
 const fs = require('fs');
 
 async function getScreenshot(url) {
-  const response = await axios.post('https://capture.simple-flow.co/screenshot', {
+  const response = await axios.post('https://capture.simple-flow.co/', {
     url: url
   }, { responseType: 'arraybuffer' });
   
